@@ -19,22 +19,57 @@ $user=mysqli_fetch_assoc($result);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     
-    <h2>User Details</h2>
-    <p><strong>User ID:</strong><?php echo $user['user_id'];?></p>
-        <p><strong>Name:</strong><?php echo $user['name'];?></p>
-            <p><strong>Email:</strong><?php echo $user['email'];?></p>
+   <div class="dashboard-container">
 
-                <p><strong>Role:</strong><?php echo $user['role'];?></p>
+<h2>User Details</h2>
 
-                    <p><strong>Contact Number:</strong><?php echo $user['contact_number'];?></p>
-<p><strong>Address:</strong><?php echo $user['address'];?></p>
-    <p><strong>District:</strong><?php echo $user['district'];?></p>
+<table class="details-table">
 
-    <a href="users.php">Back to Users</a>
+<tr>
+<td><strong>User ID</strong></td>
+<td><?php echo $user['user_id']; ?></td>
+</tr>
 
+<tr>
+<td><strong>Name</strong></td>
+<td><?php echo $user['name']; ?></td>
+</tr>
+
+<tr>
+<td><strong>Email</strong></td>
+<td><?php echo $user['email']; ?></td>
+</tr>
+
+<tr>
+<td><strong>Role</strong></td>
+<td><?php echo $user['role']; ?></td>
+</tr>
+
+<tr>
+<td><strong>Contact</strong></td>
+<td><?php echo $user['contact_number']; ?></td>
+</tr>
+
+<tr>
+<td><strong>Address</strong></td>
+<td><?php echo $user['address']; ?></td>
+</tr>
+
+<tr>
+<td><strong>District</strong></td>
+<td><?php echo $user['district']; ?></td>
+</tr>
+
+</table>
+
+<a href="users.php">Back to Users</a>
+
+</div>
 
 </body>
 </html>
