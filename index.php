@@ -15,7 +15,7 @@
 
     <header class="header">
   <a href="#" class="account-btn" onclick="openModal()">Account</a>
-  <a href="#" class="learn-btn" onclick="">Admin Portal</a>
+  <a href="login.php" class="learn-btn" onclick="">Admin Portal</a>
     </header>
 <!-- Upper Section -->
     <div class="content">
@@ -415,7 +415,7 @@ function closeModal(){
  <div id="authModal" class="modal">
   <div class="modal-box iframe-box">
     <span class="close-btn" onclick="closeModal()">&times;</span>
-    <iframe src="login.php"></iframe>
+    <iframe src="userlogin.php"></iframe>
   </div>
 </div>
 </body>
