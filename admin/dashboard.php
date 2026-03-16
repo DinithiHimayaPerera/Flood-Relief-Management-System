@@ -1,73 +1,173 @@
 <?php
 
-
-
 include("../includes/config.php");
 include("../includes/admin_auth.php");
 include("../includes/admin_nav.php");
+
+
 $userCount = 0;
-
 $sql = "SELECT COUNT(*) FROM users";
-$result = mysqli_query($conn, $sql);
+$result = mysqli_query($conn,$sql);
 
-if ($result) {
+if($result){
     $row = mysqli_fetch_row($result);
     $userCount = $row[0];
 }
-$requestCount= 0;
-$sql2="SELECT COUNT(*) FROM relief_requests";
-$result2=mysqli_query($conn,$sql2);
+
+
+$requestCount = 0;
+$sql2 = "SELECT COUNT(*) FROM relief_requests";
+$result2 = mysqli_query($conn,$sql2);
+
 if($result2){
-    $row2=mysqli_fetch_row($result2);
-    $requestCount=$row2[0];
+    $row2 = mysqli_fetch_row($result2);
+    $requestCount = $row2[0];
 }
+
 
 $severityCounts = [];
 
-$sqlTypes = "
-    SELECT severity, COUNT(*) AS total 
-    FROM relief_requests 
-    GROUP BY severity
+$sql3 = "
+SELECT severity, COUNT(*) as total
+FROM relief_requests
+GROUP BY severity
 ";
 
-$resultTypes = mysqli_query($conn, $sqlTypes);
+$result3 = mysqli_query($conn,$sql3);
 
-if ($resultTypes) {
-    while ($row3 = mysqli_fetch_assoc($resultTypes)) {
+if($result3){
+    while($row3 = mysqli_fetch_assoc($result3)){
         $severityCounts[$row3['severity']] = $row3['total'];
     }
 }
 
+
 $reliefCounts = [];
 
-$sqlTypes2 = "
-    SELECT relief_type, COUNT(*) AS total 
-    FROM relief_requests 
-    GROUP BY relief_type
+$sql4 = "
+SELECT relief_type, COUNT(*) as total
+FROM relief_requests
+GROUP BY relief_type
 ";
 
-$resultTypes2 = mysqli_query($conn, $sqlTypes2);
+$result4 = mysqli_query($conn,$sql4);
 
-if ($resultTypes2) {
-    while ($row = mysqli_fetch_assoc($resultTypes2)) {
-        $reliefCounts[$row['relief_type']] = $row['total'];
+if($result4){
+    while($row4 = mysqli_fetch_assoc($result4)){
+        $reliefCounts[$row4['relief_type']] = $row4['total'];
     }
 }
 
 ?>
 
-<h1>Welcome to Admin Dashboard</h1>
-<p>Database connected successfully</p>
-<h2>Admin Dashboard</h2>
-<p>Total Registered Users: <?php echo $userCount; ?></p>
-<p>Total Relief Requests:<?php echo $requestCount;?>
-<p>High Severity Households:<?php echo $severityCounts['High'] ??0;?>
-<p>Medium Severity  Households:<?php echo $severityCounts['Medium'] ??0;?>
-<p>Low Severity Households:<?php echo $severityCounts['Low'] ??0;?>
-<p>Food Requests: <?php echo $reliefCounts['Food'] ?? 0; ?></p>
-<p>Water Requests: <?php echo $reliefCounts['Water'] ?? 0; ?></p>
-<p>Medicine Requests: <?php echo $reliefCounts['Medicine'] ?? 0; ?></p>
-<p>Shelter Requests: <?php echo $reliefCounts['Shelter'] ?? 0; ?></p>
-</p>
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/admin.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+<h1>Admin Dashboard</h1>
+
+<div class="stat-cards">
+
+<div class="card">
+Total Users
+<strong><?php echo $userCount; ?></strong>
+</div>
+
+<div class="card">
+Total Requests
+<strong><?php echo $requestCount; ?></strong>
+</div>
+
+<div class="card">
+High Severity
+<strong><?php echo $severityCounts['High'] ?? 0; ?></strong>
+</div>
+
+<div class="card">
+Medium Severity
+<strong><?php echo $severityCounts['Medium'] ?? 0; ?></strong>
+</div>
+
+<div class="card">
+Low Severity
+<strong><?php echo $severityCounts['Low'] ?? 0; ?></strong>
+</div>
+
+</div>
 
 
+<h2>Severity Distribution</h2>
+<canvas id="severityChart"></canvas>
+
+
+<h2>Relief Requests</h2>
+<canvas id="reliefChart"></canvas>
+
+
+</div>
+
+
+<script>
+
+
+
+const severityChart = document.getElementById('severityChart');
+
+new Chart(severityChart, {
+    type: 'bar',
+    data: {
+        labels: ['High','Medium','Low'],
+        datasets: [{
+            label: 'Severity Households',
+            data: [
+                <?php echo $severityCounts['High'] ?? 0; ?>,
+                <?php echo $severityCounts['Medium'] ?? 0; ?>,
+                <?php echo $severityCounts['Low'] ?? 0; ?>
+            ],
+            backgroundColor:[
+                '#e74c3c',
+                '#f1c40f',
+                '#2ecc71'
+            ]
+        }]
+    }
+});
+
+
+
+
+const reliefChart = document.getElementById('reliefChart');
+
+new Chart(reliefChart,{
+    type:'bar',
+    data:{
+        labels:['Food','Water','Medicine','Shelter'],
+        datasets:[{
+            label:'Relief Requests',
+            data:[
+                <?php echo $reliefCounts['Food'] ?? 0; ?>,
+                <?php echo $reliefCounts['Water'] ?? 0; ?>,
+                <?php echo $reliefCounts['Medicine'] ?? 0; ?>,
+                <?php echo $reliefCounts['Shelter'] ?? 0; ?>
+            ],
+            backgroundColor:'#1E5A8A'
+        }]
+    }
+});
+
+</script>
+
+</body>
+</html>
