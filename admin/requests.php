@@ -12,7 +12,6 @@ $result = mysqli_query($conn, $sql);
 <title>Relief Requests</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="../css/admin.css">
 </head>
 
 <body>
@@ -21,74 +20,75 @@ $result = mysqli_query($conn, $sql);
 
 <div class="container mt-4">
 
-<h2 class="mb-4">Relief Requests</h2>
+    <h2 class="mb-4">Relief Requests</h2>
 
-<table class="table table-bordered table-hover shadow bg-white">
+    <div class="card shadow p-4">
 
-<thead class="table-primary">
-<tr>
-<th>ID</th>
-<th>Type</th>
-<th>District</th>
-<th>Severity</th>
-<th>Status</th>
-<th>Action</th>
-</tr>
-</thead>
+        <table class="table table-bordered table-hover">
 
-<tbody>
+            <thead class="table-primary">
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>District</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
 
-<?php
-while($row = mysqli_fetch_assoc($result)){
-    echo "<tr>";
+            <tbody>
 
-    echo "<td>".$row['request_id']."</td>";
-    echo "<td>".$row['relief_type']."</td>";
-    echo "<td>".$row['district']."</td>";
-    echo "<td>".$row['severity']."</td>";
+            <?php
+            while($row = mysqli_fetch_assoc($result)){
+                echo "<tr>";
 
-    
-    echo "<td>";
-    if($row['status'] == 'Accepted'){
-        echo "<span class='badge bg-success'>Accepted</span>";
-    }
-    elseif($row['status'] == 'Rejected'){
-        echo "<span class='badge bg-danger'>Rejected</span>";
-    }
-    else{
-        echo "<span class='badge bg-warning text-dark'>Pending</span>";
-    }
-    echo "</td>";
+                echo "<td>".$row['request_id']."</td>";
+                echo "<td>".$row['relief_type']."</td>";
+                echo "<td>".$row['district']."</td>";
+                echo "<td>".$row['severity']."</td>";
 
-    
-    echo "<td>";
+                
+                echo "<td>";
+                if($row['status'] == 'Accepted'){
+                    echo "<span class='badge bg-success'>Accepted</span>";
+                }
+                elseif($row['status'] == 'Rejected'){
+                    echo "<span class='badge bg-danger'>Rejected</span>";
+                }
+                else{
+                    echo "<span class='badge bg-warning text-dark'>Pending</span>";
+                }
+                echo "</td>";
 
-    if($row['status'] == 'Pending' || $row['status'] == NULL){
+                
+                echo "<td>";
 
-        echo "<a class='btn btn-sm btn-success me-1' 
-                href='update_status.php?id=".$row['request_id']."&status=Accepted'>
-                Approve</a>";
+                if($row['status'] == 'Pending' || $row['status'] == NULL){
 
-        echo "<a class='btn btn-sm btn-danger' 
-                href='update_status.php?id=".$row['request_id']."&status=Rejected'>
-                Reject</a>";
+                    echo "<a class='btn btn-sm btn-success me-1' 
+                            href='update_status.php?id=".$row['request_id']."&status=Accepted'>
+                            Approve</a>";
 
-    } 
-    elseif($row['status'] == 'Accepted'){
-        echo "<span class='badge bg-success'>Accepted</span>";
-    }
-    elseif($row['status'] == 'Rejected'){
-        echo "<span class='badge bg-danger'>Rejected</span>";
-    }
+                    echo "<a class='btn btn-sm btn-danger' 
+                            href='update_status.php?id=".$row['request_id']."&status=Rejected'>
+                            Reject</a>";
 
-    echo "</td>";
+                } else {
+                    echo "<span class='text-muted'>No action</span>";
+                }
 
-    echo "</tr>";
-}
-?>
+                echo "</td>";
 
-</tbody>
-</table>
+                echo "</tr>";
+            }
+            ?>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 

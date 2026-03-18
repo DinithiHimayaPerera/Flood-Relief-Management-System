@@ -3,10 +3,14 @@
     
     <div style="width:220px; background:#1E3A5F; color:white; padding:20px;">
         <h4>Admin Panel</h4>
+        
 
         <p><a href="dashboard.php" style="color:white; text-decoration:none;">Dashboard</a></p>
         <p><a href="users.php" style="color:white; text-decoration:none;">Users</a></p>
         <p><a href="requests.php" style="color:white; text-decoration:none;">Requests</a></p>
+        <a href="../index.php" class="btn btn-danger w-100 mt-4">
+    Logout
+</a>
     </div>
 
     
