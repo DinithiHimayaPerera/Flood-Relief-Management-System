@@ -1,58 +1,61 @@
 <?php
-
-
-
 include("../includes/config.php");
 include("../includes/admin_auth.php");
-include("../includes/admin_nav.php");
-$sql="SELECT user_id,name,email,role,district FROM users";
+
+$sql="SELECT user_id,name,email,role,address FROM users";
 $result=mysqli_query($conn,$sql);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/admin.css">
+<title>Users</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
 </head>
+
 <body>
-    
-    <h2>Registered Users</h2>
-    <table id="usersTable" border="1" cellpadding="6" cellspacing="0">;
-        <thead><tr><th>User ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>District</th>
-        <th>Action</th>
+
+<?php include("../includes/admin_nav.php"); ?>
+
+<h2 class="mb-4">Registered Users</h2>
+
+<table class="table table-bordered table-hover shadow bg-white">
+
+<thead class="table-primary">
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+<th>Address</th>
+<th>Action</th>
 </tr>
 </thead>
-<?php
-if($result){
-    while($row=mysqli_fetch_assoc($result)){
-        echo "<tr>";
-        echo "<td>
-        <a href='user_details.php?id=".$row['user_id']."'>View</a> | 
-        <a href='delete_user.php?id=".$row['user_id']."' 
-           onclick=\"return confirm('Are you sure you want to delete this user?');\">
-           Delete
-        </a>
-      </td>";
 
-        echo "<td>".$row['name']."</td>";
-        echo  "<td>".$row['email']."</td>";
-        echo "<td>".$row['role']."</td>";
-        echo "<td>".$row['district']."</td>";
-echo"<td><a href='user_details.php?id=".$row['user_id']."'>View</a></td>";
-echo "</tr>";
-    }
+<tbody>
+
+<?php
+while($row=mysqli_fetch_assoc($result)){
+    echo "<tr>";
+    echo "<td>".$row['user_id']."</td>";
+    echo "<td>".$row['name']."</td>";
+    echo "<td>".$row['email']."</td>";
+    echo "<td>".$row['role']."</td>";
+    echo "<td>".$row['address']."</td>";
+    echo "<td>
+        <a class='btn btn-sm btn-primary' href='user_details.php?id=".$row['user_id']."'>View</a>
+        <a class='btn btn-sm btn-danger' href='delete_user.php?id=".$row['user_id']."'>Delete</a>
+    </td>";
+    echo "</tr>";
 }
 ?>
+
 </tbody>
 </table>
-<script src="../js/users.js"></script>
+
+<?php include("../includes/admin_footer.php"); ?>
+
 </body>
 </html>

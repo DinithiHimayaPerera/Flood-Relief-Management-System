@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2026 at 10:05 AM
+-- Generation Time: Mar 18, 2026 at 06:53 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `flood_relief_db`
+-- Database: `flood_management_system`
 --
 
 -- --------------------------------------------------------
@@ -35,25 +35,26 @@ CREATE TABLE `relief_requests` (
   `division` varchar(100) NOT NULL,
   `gn_division` varchar(100) NOT NULL,
   `contact_person_name` varchar(100) NOT NULL,
-  `contact_number` int(10) NOT NULL,
+  `contact_number` varchar(25) NOT NULL,
   `family_members` int(11) NOT NULL,
   `severity` enum('Low','Medium','High') NOT NULL,
   `description` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `address` varchar(100) NOT NULL
+  `address` varchar(100) NOT NULL,
+  `status` enum('Pending','Accepted','Rejected','') DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `relief_requests`
 --
 
-INSERT INTO `relief_requests` (`request_id`, `user_id`, `relief_type`, `district`, `division`, `gn_division`, `contact_person_name`, `contact_number`, `family_members`, `severity`, `description`, `created_at`, `address`) VALUES
-(1, 2, 'Food', 'Kandy', 'Kandy', 'Katugasthota', '', 0, 5, 'High', 'A family is stranded without food after heavy rains.', '2026-02-03 19:28:00', ''),
-(2, 3, 'Water', 'Galle', 'Galle', 'Unawatuna', '', 0, 3, 'Medium', 'Need clean drinking water.', '2026-02-03 19:28:00', ''),
-(3, 5, 'Medicine', 'Kurunegala', 'Kurunegala', 'Mawathagama', '', 0, 4, 'Low', 'Require medicines for children age under 4y.', '2026-02-03 19:28:00', ''),
-(4, 2, 'Shelter', 'Kandy', 'Kandy', 'Katugasthota', '', 0, 6, 'High', 'House damaged by flood, need temporary shelter.', '2026-02-03 19:28:00', ''),
-(5, 4, 'Food', 'Matara', 'Matara', 'Devananda', '', 0, 7, 'Medium', 'Food supplies running out after storm damage.', '2026-02-03 19:28:00', ''),
-(6, 1, 'Water', 'gampaha', 'dc', 'dvd', ' cvdv', 769750023, 5, 'Low', 'help me please', '2026-03-16 08:59:46', 'cscv ');
+INSERT INTO `relief_requests` (`request_id`, `user_id`, `relief_type`, `district`, `division`, `gn_division`, `contact_person_name`, `contact_number`, `family_members`, `severity`, `description`, `created_at`, `address`, `status`) VALUES
+(1, 2, 'Food', 'Kandy', 'Kandy', 'Katugasthota', '', '0', 5, 'High', 'A family is stranded without food after heavy rains.', '2026-02-03 19:28:00', '', NULL),
+(2, 3, 'Water', 'Galle', 'Galle', 'Unawatuna', '', '0', 3, 'Medium', 'Need clean drinking water.', '2026-02-03 19:28:00', '', NULL),
+(3, 5, 'Medicine', 'Kurunegala', 'Kurunegala', 'Mawathagama', '', '0', 4, 'Low', 'Require medicines for children age under 4y.', '2026-02-03 19:28:00', '', NULL),
+(4, 2, 'Shelter', 'Kandy', 'Kandy', 'Katugasthota', '', '0', 6, 'High', 'House damaged by flood, need temporary shelter.', '2026-02-03 19:28:00', '', NULL),
+(5, 4, 'Food', 'Matara', 'Matara', 'Devananda', '', '0', 7, 'Medium', 'Food supplies running out after storm damage.', '2026-02-03 19:28:00', '', NULL),
+(6, 1, 'Water', 'gampaha', 'dc', 'dvd', ' cvdv', '769750023', 5, 'Low', 'help me please', '2026-03-16 08:59:46', 'cscv ', NULL);
 
 -- --------------------------------------------------------
 
@@ -65,7 +66,7 @@ CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `password` varchar(10) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `role` enum('admin','user') NOT NULL,
   `address` varchar(100) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -98,8 +99,7 @@ ALTER TABLE `relief_requests`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `password` (`password`);
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables

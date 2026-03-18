@@ -3,7 +3,7 @@
 $host = "localhost";
 $username = "root";
 $password = "";
-$database = "flood_relief_db";
+$database = "flood_management_system.db";
 
 $conn = new mysqli($host, $username, $password, $database);
 
