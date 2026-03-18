@@ -18,11 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     /* Sign up */
     if (isset($_POST["signup"])) {
+        $name = trim($_POST["signup_name"]);
         $email = trim($_POST["signup_email"]);
+        $address = trim($_POST["signup_address"]);
         $password = $_POST["signup_password"];
         $confirm_password = $_POST["signup_confirm_password"];
 
-        if (empty($email) || empty($password) || empty($confirm_password)) {
+        if (empty($name)||empty($email) || empty($address) || empty($password) || empty($confirm_password)) {
             $_SESSION["message"] = "Please fill in all signup fields.";
             $_SESSION["message_type"] = "error";
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -43,11 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["message_type"] = "error";
             } else {
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $default_name = "User";
+                
 
-                $insert_sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+                $insert_sql = "INSERT INTO users (name, email, address, password) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($insert_sql);
-                $stmt->bind_param("sss", $default_name, $email, $hashed_password);
+                $stmt->bind_param("ssss", $name, $email, $address, $hashed_password);
 
                 if ($stmt->execute()) {
                     $_SESSION["message"] = "Signup successful. You can now sign in.";
@@ -131,7 +133,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="content">
                     <h2>Sign Up</h2>
                     <form method="post" action=""novalidate>
+                        <input type="text" name="signup_name" placeholder="Full Name" required>
                         <input type="text" name="signup_email" placeholder="Email" required>
+                        <input type="text" name="signup_address" placeholder="Address" required>
                         <input type="password" name="signup_password" placeholder="Password" required>
                         <input type="password" name="signup_confirm_password" placeholder="Confirm Password" required>
                         <button type="submit" name="signup">Sign up</button>
