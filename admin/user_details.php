@@ -6,6 +6,8 @@ $user_id = $_GET['id'];
 $sql = "SELECT * FROM users WHERE user_id=$user_id";
 $result = mysqli_query($conn, $sql);
 $user = mysqli_fetch_assoc($result);
+$sqlReq = "SELECT * FROM relief_requests WHERE user_id = $user_id";
+$resultReq = mysqli_query($conn, $sqlReq);
 ?>
 
 <!DOCTYPE html>
@@ -62,6 +64,57 @@ $user = mysqli_fetch_assoc($result);
             
 
         </table>
+
+        <h4 class="mt-5 mb-3">User Requests</h4>
+
+<?php if(mysqli_num_rows($resultReq) > 0): ?>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>Request ID</th>
+            <th>Relief Type</th>
+            <th>District</th>
+            <th>Severity</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <?php while($row = mysqli_fetch_assoc($resultReq)): ?>
+        <tr>
+            <td><?php echo $row['request_id']; ?></td>
+            <td><?php echo $row['relief_type']; ?></td>
+            <td><?php echo $row['district']; ?></td>
+            <td><?php echo $row['severity']; ?></td>
+
+            <td>
+                <?php
+                if($row['status'] == 'Accepted'){
+                    echo "<span class='badge bg-success'>Accepted</span>";
+                } elseif($row['status'] == 'Rejected'){
+                    echo "<span class='badge bg-danger'>Rejected</span>";
+                } else {
+                    echo "<span class='badge bg-warning text-dark'>Pending</span>";
+                }
+                ?>
+            </td>
+
+            <td>
+                <a href="request_details.php?id=<?php echo $row['request_id']; ?>" 
+                   class="btn btn-sm btn-primary">
+                   View
+                </a>
+            </td>
+        </tr>
+    <?php endwhile; ?>
+    </tbody>
+</table>
+
+<?php else: ?>
+    <p class="text-muted">No requests submitted by this user.</p>
+<?php endif; ?>
 
         <a href="users.php" class="btn btn-secondary mt-3">⬅ Back to Users</a>
 
