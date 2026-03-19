@@ -74,7 +74,7 @@ $result = mysqli_query($conn, $sql);
     echo "</tr>";
 }
 ?>
-            ?>
+            
 
             </tbody>
 
