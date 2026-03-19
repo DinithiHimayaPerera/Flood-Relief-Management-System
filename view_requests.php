@@ -42,7 +42,7 @@ body {
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         width: 100%;
         max-width: 1000px;
-        overflow-x: auto; /* Table එක ලොකු වැඩි වුණොත් scroll වෙන්න */
+        overflow-x: auto; 
         }
  h1 {
     text-align: center;
@@ -164,7 +164,7 @@ body {
                     <td><?php echo htmlspecialchars($row['contact_number']); ?></td>
                     <td><strong><?php echo htmlspecialchars($row['severity']); ?></strong></td>
                     <td>
-                   <a href="update_request.php?id=<?php echo $row['request_id']; ?>" class="btn-edit">Edit</a>
+                   <a href="update.php?id=<?php echo $row['request_id']; ?>" class="btn-edit">Edit</a>
                   <a href="delete_request.php?id=<?php echo $row['request_id']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this request?');">Delete</a>
                     </td>
                  </tr>

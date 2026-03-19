@@ -139,7 +139,7 @@ form button:hover {
         <label>GN Division :</label>
         <input type="text" name="gn_division" required>
 
-        <label>Contact person namet:</label>
+        <label>Contact person name:</label>
         <input type="text" name="contact_person_name" required>
 
         <label>Contact number:</label>
@@ -164,7 +164,10 @@ form button:hover {
         <label>Descriptions:</label>
         <input type="text" name="description" required>
 
-        <button type="submit">Submit Request</button>
+        <!--<button type="submit">Submit Request</button> -->
+        <div class="btn-container">
+            <a href="view_requests.php" class="btn-back">Submit Request</a>
+        </div>
 
         </form>
     </div>
