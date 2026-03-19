@@ -51,7 +51,7 @@ $link->close();
         }
 
         body {
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            background: linear-gradient(to right, #000428, #004e92);
             min-height: 100vh;
             display: flex;
             justify-content: center;
