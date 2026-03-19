@@ -5,34 +5,26 @@
 </a>
 
 <?php
+include 'db.php'; 
 
-include 'db.php';
+if(isset($_GET['id'])){
 
-if(isset($_GET['user_id'])){
+    $id = $_GET['id'];
+    
+    $sql = "DELETE FROM relief_requests WHERE request_id = '$id'";
 
-    $user_id = $_GET['user_id'];
-    $sql = "DELETE FROM relief_requests WHERE user_id = '$user_id";
-
-    if($conn->query($sql)==TRUE) {
-        header("Location: view_request.php?success=1");
+    if($conn->query($sql) === TRUE) {
+        header("Location: view_requests.php?success=1");
         exit();
     }
-    else{
-        echo "Error: ".$conn->error;
+    else {
+        echo "Error: " . $conn->error;
     }
 
 }
-else{
-    echo "Invalid request";
+else {
+    echo "Invalid request. ID not found.";
 }
 
 $conn->close();
-
-if(isset($_GET['success']) && $_GET['success']==1){
-    echo "<script>alert('Request deleted successfully1');</scrpt>";
-    
-}
-
 ?>
-
-

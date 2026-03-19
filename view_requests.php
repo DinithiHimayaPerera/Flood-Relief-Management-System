@@ -6,16 +6,16 @@ $username = "root";
 $password = "";
 $dbname = "flood_management_system";
 
-$link = new mysqli($servername,$username,$password,$dbname);
+$conn = new mysqli($servername,$username,$password,$dbname);
 
-if ($link -> connect_error)
+if ($conn -> connect_error)
     {
-        die("Connection failed : ". $link ->connect_error);
+        die("Connection failed : ". $conn ->connect_error);
     }
      $user_id = isset ($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
 
      $sql = "SELECT * FROM relief_requests WHERE user_id = '$user_id'";
-     $result = $link->query($sql);
+     $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -185,8 +185,3 @@ body {
 </body>
 </html>
 
-<?php 
-$link->close(); 
-?>
-</body>
-</html>
