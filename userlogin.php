@@ -45,10 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["message_type"] = "error";
             } else {
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                
-                $insert_sql = "INSERT INTO users (name, email, address, password) VALUES (?, ?, ?, ?)";
+                $role = "user";
+                $insert_sql = "INSERT INTO users (name, email, address, password,role) VALUES (?, ?, ?, ?,?)";
                 $stmt = $conn->prepare($insert_sql);
-                $stmt->bind_param("ssss", $name, $email, $address, $hashed_password);
+                $stmt->bind_param("sssss", $name, $email, $address, $hashed_password,$role);
 
                 if ($stmt->execute()) {
                     $_SESSION["message"] = "Signup successful. You can now sign in.";
