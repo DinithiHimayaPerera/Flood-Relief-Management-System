@@ -6,7 +6,12 @@ include("../includes/admin_auth.php");
 $request_id = $_GET['id'];
 
 
-$sql = "SELECT * FROM relief_requests WHERE request_id = $request_id";
+$sql = "
+SELECT relief_requests.*, users.name, users.email
+FROM relief_requests
+JOIN users ON relief_requests.user_id = users.user_id
+WHERE relief_requests.request_id = $request_id
+";
 $result = mysqli_query($conn, $sql);
 $request = mysqli_fetch_assoc($result);
 ?>
@@ -30,7 +35,8 @@ $request = mysqli_fetch_assoc($result);
 <div class="card shadow p-4">
 
 <table class="table table-bordered">
-
+<tr><th>User Name</th><td><?php echo $request['name']; ?></td></tr>
+<tr><th>Email</th><td><?php echo $request['email']; ?></td></tr>
 <tr><th>Request ID</th><td><?php echo $request['request_id']; ?></td></tr>
 <tr><th>Relief Type</th><td><?php echo $request['relief_type']; ?></td></tr>
 <tr><th>District</th><td><?php echo $request['district']; ?></td></tr>
