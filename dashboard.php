@@ -20,7 +20,7 @@ if ($link->connect_error) {
 $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['user_name'];
 
-// Fetch statistics
+
 $sql_total = "SELECT COUNT(*) as total FROM relief_requests WHERE user_id = '$user_id'";
 $res_total = $link->query($sql_total);
 $total_requests = $res_total->fetch_assoc()['total'];

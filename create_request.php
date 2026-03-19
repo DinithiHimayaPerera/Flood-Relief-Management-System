@@ -52,6 +52,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Relief Request</title>
     <style >
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
 body {
     background: linear-gradient(to right, #0a0b0b, #004e92);
     color: white;
@@ -137,7 +143,7 @@ form select {
 }
 
 form input::placeholder {
-    color: rgba(255,255,255,0.6);
+    color:#888;
 }
 
 .btn-submit {
@@ -249,7 +255,6 @@ form input::placeholder {
     <div class="panel-section">
 
         <h3>Create Relief Request</h3>
-        <p>Please fill in the required details to submit your request.</p>
 
         <form method="POST">
 
