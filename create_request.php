@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $description =$_POST ['description'];
 
         $sql = "INSERT INTO relief_requests (user_id, relief_type, district, division, gn_division, contact_person_name,contact_number, address , family_members, severity, description   )
-                VALUES  ('$user_id' , '$relief_type' , '$district' , '$division' , '$gn_division' ,' $contact_person_name','$contact_number', '$address' ,'$family_members' , '$severity' , '$description'   ) " ;
+                VALUES  ('$user_id' , '$relief_type' , '$district' , '$division' , '$gn_division' ,'$contact_person_name','$contact_number', '$address' ,'$family_members' , '$severity' , '$description'   ) " ;
        if ($link -> query ($sql) == TRUE){
         header ("Location: view_requests.php?success = true");
         exit();
@@ -56,12 +56,10 @@ body {
     background: linear-gradient(to right, #0a0b0b, #004e92);
     color: white;
     font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center; 
-    align-items: center;     
+       
     margin: 0;
     padding: 20px;
-    padding-top: 100px;
+    
 }
  .topic {
     background: rgba(255, 255, 255, 0.95); 
@@ -117,29 +115,181 @@ form button {
 form button:hover {
     background-color: #003666;
 }
+form {
+    margin-top: 20px;
+}
 
+form label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+form input,
+form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background:white;
+    color:black;
+}
+
+form input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.btn-submit {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: #4facfe;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background: #2c82f6;
+}
+.dashboard-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+
+.panel-section {
+    background: rgba(255,255,255,0.1);
+    padding: 25px;
+    border-radius: 12px;
+}
+.nav-links {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 18px 24px;
+    margin-bottom: 28px;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.08);
+}
+
+.brand-section h2 {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.brand-section p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.78);
+    margin-top: 4px;
+}
+.btn-nav {
+    text-decoration: none;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.75);
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s;
+    background: transparent;
+}
+
+.btn-nav:hover {
+    background: white;
+    color: #004e92;
+}
+
+.btn-logout {
+    border-color: #ff5c5c;
+    color: #ffb3b3;
+}
+
+.btn-logout:hover {
+    background: #ff5c5c;
+    color: white;
+}
 
     </style>
 </head>
 <body>
-    <?php include 'navbar.php'; ?>
-    <div class = "topic">
-        <h1> Flood Relief Request </h1>
+    
+  
 
-        <form action = "" method = "POST">
+<div class="dashboard-container">
+
+    
+    <div class="navbar">
+        <div class="brand-section">
+            <h2>Aqua Aid</h2>
+            <p>Flood Relief Management System</p>
+        </div>
+
+        <div class="nav-links">
+            <a href="view_requests.php" class="btn-nav">View Requests</a>
+            <a href="dashboard.php" class="btn-nav">Dashboard</a>
+            <a href="logout.php" class="btn-nav btn-logout">Logout</a>
+        </div>
+    </div>
+
+    
+    <div class="panel-section">
+
+        <h3>Create Relief Request</h3>
+        <p>Please fill in the required details to submit your request.</p>
+
+        <form method="POST">
 
         <label> Type of Relief :  </label>
-        <select name="relief_type" aria-label="Default select example">
-            <option selected>Select an option</option>
+        <select name="relief_type" required aria-label="Default select example">
+            <option value="">Select an option</option>
             <option value="Food">Food</option>
             <option value="Water">Water</option>
             <option value="Medicine">Medicine</option>
             <option value="Shelter">Shelter</option>
         </select>
 
-        <label>distric:</label>
-        <input type="text" name="district" placeholder="e.g. Colombo" required>
-
+        <label>Distric:</label>
+<select name="district" required>
+    <option value="">Select District</option>
+    <option value="Colombo">Colombo</option>
+    <option value="Gampaha">Gampaha</option>
+    <option value="Kalutara">Kalutara</option>
+    <option value="Kandy">Kandy</option>
+    <option value="Matale">Matale</option>
+    <option value="Nuwara Eliya">Nuwara Eliya</option>
+    <option value="Galle">Galle</option>
+    <option value="Matara">Matara</option>
+    <option value="Hambantota">Hambantota</option>
+    <option value="Jaffna">Jaffna</option>
+    <option value="Kurunegala">Kurunegala</option>
+    <option value="Anuradhapura">Anuradhapura</option>
+    <option value="Polonnaruwa">Polonnaruwa</option>
+    <option value="Badulla">Badulla</option>
+    <option value="Monaragala">Monaragala</option>
+    <option value="Ratnapura">Ratnapura</option>
+    <option value="Kegalle">Kegalle</option>
+    <option value="Trincomalee">Trincomalee</option>
+    <option value="Batticaloa">Batticaloa</option>
+    <option value="Ampara">Ampara</option>
+    <option value="Mannar">Mannar</option>
+    <option value="Vavuniya">Vavuniya</option>
+    <option value="Kilinochchi">Kilinochchi</option>
+    <option value="Mullaitivu">Mullaitivu</option>
+</select>
         <label>Divisional Secretariat:</label>
         <input type="text" name="division" required>
 
@@ -150,17 +300,17 @@ form button:hover {
         <input type="text" name="contact_person_name" required>
 
         <label>Contact number:</label>
-        <input type="text" name="contact_number" required>
+        <input type="tel" name="contact_number" required pattern="[0-9]{10}"placeholder="e.g.0771234567">
 
         <label>Address:</label>
-        <input type="text" name="address" required>
+        <input type="text" name="address" >
 
         <label>Number of family members:</label>
-        <input type="text" name="family_members" required>
+        <input type="number" name="family_members" required min="1" max="20">
 
-        <lable> Flood severity level :  </lable>
-        <select name="severity" aria-label="Default select example">
-            <option selected>Select an option</option>
+        <label> Flood severity level :  </label>
+        <select name="severity" required aria-label="Default select example">
+            <option value="">Select an option</option>
             <option value="Low">Low</option>
             <option value="Medium">Medium</option>
             <option value="High">High</option>
@@ -169,9 +319,9 @@ form button:hover {
         
 
         <label>Descriptions:</label>
-        <input type="text" name="description" required>
+        <input type="text" name="description" >
 
-        <button type="submit">Submit Request</button>
+        <button type="submit" class="btn-submit">Submit Request</button>
         
         </form>
     </div>
