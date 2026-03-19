@@ -27,7 +27,10 @@ $sql3 = "SELECT severity, COUNT(*) as total
 $res3 = mysqli_query($conn, $sql3);
 
 while($row = mysqli_fetch_assoc($res3)){
-    $severityCounts[$row['severity']] = $row['total'];
+    $severity=$row['severity'];
+    if(array_key_exists($severity,$severityCounts)){
+        $severityCounts[$severity]=$row['total'];
+    }
 }
 
 
