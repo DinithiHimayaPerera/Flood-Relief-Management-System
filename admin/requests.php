@@ -49,39 +49,31 @@ $result = mysqli_query($conn, $sql);
                 echo "<td>".$row['severity']."</td>";
 
                 
-                echo "<td>";
-                if($row['status'] == 'Accepted'){
-                    echo "<span class='badge bg-success'>Accepted</span>";
-                }
-                elseif($row['status'] == 'Rejected'){
-                    echo "<span class='badge bg-danger'>Rejected</span>";
-                }
-                else{
-                    echo "<span class='badge bg-warning text-dark'>Pending</span>";
-                }
-                echo "</td>";
+               echo "<td>";
 
-                
-                echo "<td>";
+    if($row['status'] == 'Accepted'){
+        echo "<span class='badge bg-success'>Accepted</span>";
+    }
+    elseif($row['status'] == 'Rejected'){
+        echo "<span class='badge bg-danger'>Rejected</span>";
+    }
+    else{
+        echo "<span class='badge bg-warning text-dark'>Pending</span>";
+    }
 
-                if($row['status'] == 'Pending' || $row['status'] == NULL){
+    echo "</td>";
 
-                    echo "<a class='btn btn-sm btn-success me-1' 
-                            href='update_status.php?id=".$row['request_id']."&status=Accepted'>
-                            Approve</a>";
+    echo "<td>";
 
-                    echo "<a class='btn btn-sm btn-danger' 
-                            href='update_status.php?id=".$row['request_id']."&status=Rejected'>
-                            Reject</a>";
+    echo "<a class='btn btn-sm btn-primary' 
+            href='request_details.php?id=".$row['request_id']."'>
+            View</a>";
 
-                } else {
-                    echo "<span class='text-muted'>No action</span>";
-                }
+    echo "</td>";
 
-                echo "</td>";
-
-                echo "</tr>";
-            }
+    echo "</tr>";
+}
+?>
             ?>
 
             </tbody>

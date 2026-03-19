@@ -59,6 +59,7 @@ $user = mysqli_fetch_assoc($result);
                 <th>Address</th>
                 <td><?php echo $user['address']; ?></td>
             </tr>
+            
 
         </table>
 
