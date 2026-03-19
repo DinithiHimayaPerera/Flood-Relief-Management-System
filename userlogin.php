@@ -90,8 +90,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION["user_name"] = $user["name"];
                     $_SESSION["user_email"] = $user["email"];
 
-                    header("Location: dashboard.php");
-                    exit();
+                echo "<script>window.top.location.href='dashboard.php';</script>";
+                exit();
                 } else {
                     $_SESSION["message"] = "Incorrect password.";
                     $_SESSION["message_type"] = "error";
