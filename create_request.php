@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+if(!isset($_SESSION['user_id'])){
+    header("Location:login.php");
+    exit();
+}
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -12,9 +17,9 @@ if ($link -> connect_error)
     {
         die("Connection failed : ". $link ->connect_error);
     }
+    $user_id=$_SESSION['user_id'];
 if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
-        $user_id = isset ($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
 
         $relief_type =$_POST ['relief_type'];
         $district =$_POST ['district'];
@@ -30,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $sql = "INSERT INTO relief_requests (user_id, relief_type, district, division, gn_division, contact_person_name,contact_number, address , family_members, severity, description   )
                 VALUES  ('$user_id' , '$relief_type' , '$district' , '$division' , '$gn_division' ,' $contact_person_name','$contact_number', '$address' ,'$family_members' , '$severity' , '$description'   ) " ;
        if ($link -> query ($sql) == TRUE){
-        header ("Location: view_requests.php? success = true");
+        header ("Location: view_requests.php?success = true");
         exit();
        } 
        else {
@@ -124,7 +129,7 @@ form button:hover {
         <label> Type of Relief :  </label>
         <select name="relief_type" aria-label="Default select example">
             <option selected>Select an option</option>
-            <option value="Food ">Food</option>
+            <option value="Food">Food</option>
             <option value="Water">Water</option>
             <option value="Medicine">Medicine</option>
             <option value="Shelter">Shelter</option>
@@ -154,7 +159,7 @@ form button:hover {
         <lable> Flood severity level :  </lable>
         <select name="severity" aria-label="Default select example">
             <option selected>Select an option</option>
-            <option value="Low ">Low</option>
+            <option value="Low">Low</option>
             <option value="Medium">Medium</option>
             <option value="High">High</option>
 
@@ -164,11 +169,8 @@ form button:hover {
         <label>Descriptions:</label>
         <input type="text" name="description" required>
 
-        <!--<button type="submit">Submit Request</button> -->
-        <div class="btn-container">
-            <a href="view_requests.php" class="btn-back">Submit Request</a>
-        </div>
-
+        <button type="submit">Submit Request</button>
+        
         </form>
     </div>
 </body>

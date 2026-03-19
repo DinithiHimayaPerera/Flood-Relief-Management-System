@@ -150,6 +150,7 @@ body {
                     <th>Contact Person</th>
                     <th>Contact Number</th>
                     <th>Severity</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -163,6 +164,8 @@ body {
                     <td><?php echo htmlspecialchars($row['contact_person_name']); ?></td>
                     <td><?php echo htmlspecialchars($row['contact_number']); ?></td>
                     <td><strong><?php echo htmlspecialchars($row['severity']); ?></strong></td>
+                    <td><?php echo htmlspecialchars($row['status']); ?></td>
+
                     <td>
                    <a href="update.php?id=<?php echo $row['request_id']; ?>" class="btn-edit">Edit</a>
                   <a href="delete_request.php?id=<?php echo $row['request_id']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this request?');">Delete</a>
