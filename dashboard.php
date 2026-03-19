@@ -20,6 +20,7 @@ if ($link->connect_error) {
 $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['user_name'];
 
+// Fetch statistics
 $sql_total = "SELECT COUNT(*) as total FROM relief_requests WHERE user_id = '$user_id'";
 $res_total = $link->query($sql_total);
 $total_requests = $res_total->fetch_assoc()['total'];
@@ -32,243 +33,326 @@ $sql_rejected = "SELECT COUNT(*) as rejected FROM relief_requests WHERE user_id 
 $res_rejected = $link->query($sql_rejected);
 $rejected_requests = $res_rejected->fetch_assoc()['rejected'];
 
+$pending_requests = $total_requests - ($accepted_requests + $rejected_requests);
+
 $link->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Dashboard - Aqua Aid</title>
 
-        body {
-            background: linear-gradient(to right, #000428, #004e92);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            padding-top: 100px;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+body {
+    min-height: 100vh;
+    background: linear-gradient(to right, #0a0b0b, #004e92);
+    color: white;
+}
 
-       .dashboard-container {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 50px 40px;
-            border-radius: 20px;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
-            width: 95%; 
-            max-width: 1100px; 
-            animation: fadeIn 0.8s ease-out forwards;
-        }
+.dashboard-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px 40px;
+}
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 18px 24px;
+    margin-bottom: 28px;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.08);
+}
 
-        .header h1 {
-            color: #111;
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: -1px;
-        }
+.brand-section h2 {
+    font-size: 28px;
+    font-weight: bold;
+}
 
-        .header h1 i {
-            color: #007bff;
-            margin-right: 10px;
-        }
+.brand-section p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.78);
+    margin-top: 4px;
+}
 
-        .header p {
-            color: #555;
-            font-size: 17px;
-            font-weight: 400;
-        }
+.nav-links {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+}
 
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 25px;
-            margin-bottom: 45px;
-        }
+.btn-nav {
+    text-decoration: none;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.75);
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s;
+    background: transparent;
+}
 
-        .stat-card {
-            flex: 1;
-            padding: 30px 20px;
-            border-radius: 16px;
-            text-align: center;
-            color: white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: transform 0.4s ease, box-shadow 0.4s ease; 
-            position: relative;
-            overflow: hidden;
-        }
+.btn-nav:hover {
+    background: white;
+    color: #004e92;
+}
 
-        .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-        }
+.btn-logout {
+    border-color: #ff5c5c;
+    color: #ffb3b3;
+}
 
-        .stat-card.total { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .stat-card.accepted { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-        .stat-card.rejected { background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); }
+.btn-logout:hover {
+    background: #ff5c5c;
+    color: white;
+}
 
-        .stat-icon {
-            font-size: 45px;
-            margin-bottom: 15px;
-            opacity: 0.8;
-            transition: transform 0.3s ease;
-        }
+.welcome-section {
+    padding: 35px 30px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.16);
+    margin-bottom: 28px;
+    text-align: center;
+}
 
-        .stat-card:hover .stat-icon {
-            transform: scale(1.1);
-            opacity: 1;
-        }
+.welcome-section h1 {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
-        .stat-card h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+.welcome-section p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.86);
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+}
 
-        .stat-card .count {
-            font-size: 48px;
-            font-weight: 700;
-            line-height: 1;
-        }
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 28px;
+}
 
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px; 
-            flex-wrap: wrap; 
-        }
+.stats-card {
+    padding: 25px 20px;
+    text-align: center;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.16);
+}
 
-        .btn {
-            flex: 1;
-            padding: 16px 20px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            min-width: 220px; 
-            max-width: 280px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-        }
+.stats-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
 
-        .btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.2);
-        }
+.stats-count {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
 
-        .btn-view {
-            background-color: #0f2027;
-            color: white;
-            border: 2px solid #0f2027;
-        }
+.stats-description {
+    font-size: 13px;
+    color: rgba(255,255,255,0.78);
+}
 
-        .btn-view:hover {
-            background-color: transparent;
-            color: #0f2027;
-        }
+.stats-total { border-bottom: 4px solid #7fb3ff; }
+.stats-accepted { border-bottom: 4px solid #4ade80; }
+.stats-rejected { border-bottom: 4px solid #fb7185; }
+.stats-pending { border-bottom: 4px solid #facc15; }
 
-        .btn-create {
-            background-color: #11998e;
-            color: white;
-            border: 2px solid #11998e;
-        }
+.panel-section {
+    padding: 28px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.16);
+    margin-bottom: 20px;
+}
 
-        .btn-create:hover {
-            background-color: transparent;
-            color: #11998e;
-        }
+.panel-section h3 {
+    font-size: 22px;
+    margin-bottom: 16px;
+}
 
-        .btn-logout {
-            background-color: #ff416c;
-            color: white;
-            border: 2px solid #ff416c;
-        }
+.panel-section p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.8;
+}
 
-        .btn-logout:hover {
-            background-color: transparent;
-            color: #ff416c;
-        }
+.support-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 18px;
+}
 
-        @media (max-width: 768px) {
-            .stats-row {
-                flex-direction: column;
-            }
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            .btn {
-                width: 100%;
-                max-width: 100%;
-            }
-            .dashboard-container {
-                padding: 30px 20px;
-            }
-        }
-    </style>
+.support-item {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+}
+
+.support-item h4 {
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.support-item p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.75);
+}
+
+.reminder-list {
+    list-style: none;
+    margin-top: 14px;
+}
+
+.reminder-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.86);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.reminder-list li:last-child {
+    border-bottom: none;
+}
+
+.footer-text {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.74);
+}
+
+@media (max-width: 992px) {
+    .stats-container { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .stats-container { grid-template-columns: 1fr; }
+    .support-grid { grid-template-columns: 1fr; }
+    .navbar { flex-direction: column; align-items: flex-start; }
+    .nav-links { width: 100%; }
+    .btn-nav { width: 100%; text-align: center; }
+    .welcome-section h1 { font-size: 30px; }
+}
+</style>
 </head>
 <body>
-    <?php include 'navbar.php'; ?>
-    <div class="dashboard-container">
-        <div class="header">
-            <h1><i class="fas fa-user-shield"></i> Welcome, <?php echo htmlspecialchars($user_name); ?>!</h1>
-            <p>Your Relief Requests Overview & Management</p>
+
+<div class="dashboard-container">
+
+    <div class="navbar">
+        <div class="brand-section">
+            <h2>Aqua Aid</h2>
+            <p>Flood Relief Management System</p>
         </div>
 
-        <div class="stats-row">
-            <div class="stat-card total">
-                <i class="fas fa-layer-group stat-icon"></i>
-                <h3>Total Requests</h3>
-                <div class="count"><?php echo $total_requests; ?></div>
-            </div>
-            <div class="stat-card accepted">
-                <i class="fas fa-check-circle stat-icon"></i>
-                <h3>Accepted</h3>
-                <div class="count"><?php echo $accepted_requests; ?></div>
-            </div>
-            <div class="stat-card rejected">
-                <i class="fas fa-times-circle stat-icon"></i>
-                <h3>Rejected</h3>
-                <div class="count"><?php echo $rejected_requests; ?></div>
-            </div>
-        </div>
-
-        <div class="action-buttons">
-            <a href="view_requests.php" class="btn btn-view"><i class="fas fa-eye"></i> View My Requests</a>
-            <a href="create_request.php" class="btn btn-create"><i class="fas fa-plus-circle"></i> Create New Request</a>
-            <a href="logout.php" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <div class="nav-links">
+            <a href="view_requests.php" class="btn-nav">View Requests</a>
+            <a href="create_request.php" class="btn-nav">Create Request</a>
+            <a href="logout.php" class="btn-nav btn-logout">Logout</a>
         </div>
     </div>
 
+    <div class="welcome-section">
+        <h1>Welcome, <?php echo htmlspecialchars($user_name); ?>!</h1>
+        <p>This dashboard helps you monitor your relief request activity and access the main actions quickly.</p>
+    </div>
+
+    <div class="stats-container">
+        <div class="stats-card stats-total">
+            <h3>Total Requests</h3>
+            <div class="stats-count"><?php echo $total_requests; ?></div>
+            <div class="stats-description">All submitted requests</div>
+        </div>
+
+        <div class="stats-card stats-accepted">
+            <h3>Accepted</h3>
+            <div class="stats-count"><?php echo $accepted_requests; ?></div>
+            <div class="stats-description">Approved by admin</div>
+        </div>
+
+        <div class="stats-card stats-rejected">
+            <h3>Rejected</h3>
+            <div class="stats-count"><?php echo $rejected_requests; ?></div>
+            <div class="stats-description">Not approved</div>
+        </div>
+
+        <div class="stats-card stats-pending">
+            <h3>Pending</h3>
+            <div class="stats-count"><?php echo $pending_requests; ?></div>
+            <div class="stats-description">Waiting for review</div>
+        </div>
+    </div>
+
+    <div class="panel-section">
+        <h3>Available Relief Support</h3>
+        <p>Aqua Aid allows flood-affected users to request essential support services during emergency situations.</p>
+
+        <div class="support-grid">
+            <div class="support-item">
+                <h4>Food</h4>
+                <p>Emergency food supplies for affected households.</p>
+            </div>
+            <div class="support-item">
+                <h4>Water</h4>
+                <p>Clean drinking water and basic daily water needs.</p>
+            </div>
+            <div class="support-item">
+                <h4>Medicine</h4>
+                <p>Medical assistance and health-related support.</p>
+            </div>
+            <div class="support-item">
+                <h4>Shelter</h4>
+                <p>Temporary shelter for displaced individuals and families.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-section">
+        <h3>Quick Reminders</h3>
+        <p>Keep your request details accurate and updated so the admin can review them clearly.</p>
+
+        <ul class="reminder-list">
+            <li>Review your submitted requests regularly.</li>
+            <li>Update incorrect contact or address details when needed.</li>
+            <li>Create a new request only when essential support is required.</li>
+            <li>Check request status to see whether it is pending, accepted, or rejected.</li>
+        </ul>
+    </div>
+
+    <div class="footer-text">
+        Aqua Aid Dashboard • User Relief Overview
+    </div>
+
+</div>
 </body>
 </html>
