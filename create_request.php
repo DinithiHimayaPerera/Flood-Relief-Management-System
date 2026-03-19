@@ -4,7 +4,7 @@ session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "flood_relief_db";
+$dbname = "flood_management_system";
 
 $link = new mysqli($servername,$username,$password,$dbname);
 

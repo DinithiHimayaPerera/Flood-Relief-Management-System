@@ -409,6 +409,8 @@
 function closeModal(){
   document.getElementById("authModal").style.display = "none";
 }
+
+
     
   </script>
 

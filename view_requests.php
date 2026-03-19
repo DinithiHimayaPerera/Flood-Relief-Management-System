@@ -4,7 +4,7 @@ session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "flood_relief_db";
+$dbname = "flood_management_system";
 
 $link = new mysqli($servername,$username,$password,$dbname);
 
@@ -117,6 +117,24 @@ body {
             border-radius: 8px;
             border: 1px dashed #ccc;
         }
+ .btn-back {
+            background-color: #6c757d; 
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+            display: inline-block;
+            margin-top: 20px; 
+        }
+ .btn-back:hover { 
+            background-color: #5a6268; 
+        }
+        .btn-container {
+            text-align: center; 
+        }
  </style>
 </head>
 <body>
@@ -146,8 +164,8 @@ body {
                     <td><?php echo htmlspecialchars($row['contact_number']); ?></td>
                     <td><strong><?php echo htmlspecialchars($row['severity']); ?></strong></td>
                     <td>
-                   <a href="update_request.php?id=<?php echo $row['id']; ?>" class="btn-edit">Edit</a>
-                  <a href="delete_request.php?id=<?php echo $row['id']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this request?');">Delete</a>
+                   <a href="update_request.php?id=<?php echo $row['request_id']; ?>" class="btn-edit">Edit</a>
+                  <a href="delete_request.php?id=<?php echo $row['request_id']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this request?');">Delete</a>
                     </td>
                  </tr>
                     <?php endwhile; ?>
@@ -156,7 +174,9 @@ body {
         <?php else: ?>
             <p class="no-data">You have not submitted any relief requests yet.</p>
         <?php endif; ?>
-
+       <div class="btn-container">
+            <a href="dashboard.php" class="btn-back">Back to Dashboard</a>
+        </div>
     </div>
 
 </body>
@@ -166,4 +186,4 @@ body {
 $link->close(); 
 ?>
 </body>
-</html
+</html>

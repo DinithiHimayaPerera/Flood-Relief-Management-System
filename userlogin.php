@@ -16,7 +16,7 @@ if (isset($_SESSION["message"])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    /* Sign up */
+    /* sign up */
     if (isset($_POST["signup"])) {
         $name = trim($_POST["signup_name"]);
         $email = trim($_POST["signup_email"]);
@@ -46,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                 
-
                 $insert_sql = "INSERT INTO users (name, email, address, password) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($insert_sql);
                 $stmt->bind_param("ssss", $name, $email, $address, $hashed_password);
@@ -65,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    /* Sign in */
+    /* sign in*/
     if (isset($_POST["signin"])) {
         $email = trim($_POST["signin_email"]);
         $password = $_POST["signin_password"];
@@ -86,12 +85,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($result->num_rows === 1) {
                 $user = $result->fetch_assoc();
 
-                if (password_verify($password, $user["password"])) {
+                if (password_verify($password, $user["password"]) || $password === $user["password"]) {
                     $_SESSION["user_id"] = $user["user_id"];
                     $_SESSION["user_name"] = $user["name"];
                     $_SESSION["user_email"] = $user["email"];
 
-                    header("Location: index.php");
+                    header("Location: dashboard.php");
                     exit();
                 } else {
                     $_SESSION["message"] = "Incorrect password.";
@@ -103,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        header("Location: login.php");
+        header("Location: userlogin.php");
         exit();
     }
 }
@@ -148,14 +147,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="right" id="rightBox">
                 <div class="content">
-                    <h2>Sign in</h2>
-                     <form method="post" action=""novalidate>
-                       <form method="post" action="">
-                       <input type="text" name="signin_email" placeholder="Email" required>
-                       <input type="password" name="signin_password" placeholder="Password" required>
-                       <button type="submit" name="signin">Sign in</button>
+                <h2>Sign in</h2>
+                    <form method="post" action="" novalidate>
+                    <input type="text" name="signin_email" placeholder="Email" required>
+                    <input type="password" name="signin_password" placeholder="Password" required>
+                    <button type="submit" name="signin">Sign in</button>
                     </form>
-                    
+          
                     <p>Don't have an account?
                         <a href="#" id="LefttoRight" class="on-off">Sign up</a>
                     </p>
