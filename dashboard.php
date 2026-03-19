@@ -57,6 +57,7 @@ $link->close();
             justify-content: center;
             align-items: center;
             padding: 20px;
+            padding-top: 100px;
         }
 
         @keyframes fadeIn {
@@ -237,7 +238,7 @@ $link->close();
     </style>
 </head>
 <body>
-
+    <?php include 'navbar.php'; ?>
     <div class="dashboard-container">
         <div class="header">
             <h1><i class="fas fa-user-shield"></i> Welcome, <?php echo htmlspecialchars($user_name); ?>!</h1>

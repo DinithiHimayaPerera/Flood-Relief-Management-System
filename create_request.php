@@ -61,6 +61,7 @@ body {
     align-items: center;     
     margin: 0;
     padding: 20px;
+    padding-top: 100px;
 }
  .topic {
     background: rgba(255, 255, 255, 0.95); 
@@ -121,6 +122,7 @@ form button:hover {
     </style>
 </head>
 <body>
+    <?php include 'navbar.php'; ?>
     <div class = "topic">
         <h1> Flood Relief Request </h1>
 

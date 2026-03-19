@@ -33,6 +33,7 @@ body {
         min-height: 100vh;
         margin: 0;
         padding: 20px;
+        padding-top: 100px;
      }
 
 .container {
@@ -138,6 +139,7 @@ body {
  </style>
 </head>
 <body>
+    <?php include 'navbar.php'; ?>
     <div class="container">
         <h1>My Relief Requests</h1>
 

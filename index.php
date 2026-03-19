@@ -87,6 +87,7 @@
       background: #f5f7fb;
       color: #222;
       overflow-x: hidden;
+      
     }
 
     /* Hero Section*/
