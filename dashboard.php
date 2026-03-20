@@ -276,6 +276,7 @@ body {
         </div>
 
         <div class="nav-links">
+           <a href="dashboard.php" class="btn-nav">Dashboard</a>
             <a href="view_requests.php" class="btn-nav">View Requests</a>
             <a href="create_request.php" class="btn-nav">Create Request</a>
             <a href="logout.php" class="btn-nav btn-logout">Logout</a>
