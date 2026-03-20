@@ -59,13 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     font-family: Arial, Helvetica, sans-serif;
 }
 body {
+    min-height: 100vh;
     background: linear-gradient(to right, #0a0b0b, #004e92);
     color: white;
-    font-family: Arial, sans-serif;
-       
-    margin: 0;
-    padding: 20px;
-    
 }
  .topic {
     background: rgba(255, 255, 255, 0.95); 
@@ -163,8 +159,10 @@ form input::placeholder {
     background: #2c82f6;
 }
 .dashboard-container {
-    max-width: 1100px;
-    margin: auto;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px 40px;
 }
 
 
