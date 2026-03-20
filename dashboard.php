@@ -284,7 +284,7 @@ body {
 
     <div class="welcome-section">
         <h1>Welcome, <?php echo htmlspecialchars($user_name); ?>!</h1>
-        <p>This dashboard helps you monitor your relief request activity and access the main actions quickly.</p>
+        
     </div>
 
     <div class="stats-container">
